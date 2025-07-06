@@ -1,0 +1,21 @@
+{
+    "date": "2025-07-05",
+    "tasks": [
+        {
+            "time": "08:00",
+            "task": "Morning walk"
+        },
+        {
+            "time": "09:00",
+            "task": "Coding session"
+        },
+        {
+            "time": "12:00",
+            "task": "Lunch break"
+        },
+        {
+            "time": "14:00",
+            "task": "Grocery shopping"
+        }
+    ]
+}
