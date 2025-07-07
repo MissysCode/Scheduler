@@ -1,0 +1,27 @@
+import sqlite3
+
+DB_NAME = "schedule.db"
+
+def init_db():
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                time TEXT NOT NULL,
+                task TEXT NOT NULL
+            )
+        """)
+        conn.commit()
+
+def add_task(time, task):
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO tasks (time, task) VALUES (?, ?)", (time, task))
+        conn.commit()
+
+def get_all_tasks():
+    with sqlite3.connect(DB_NAME) as conn:
+        cursor = conn.cursor()
+        cursor.execute("SELECT time, task FROM tasks ORDER BY time")
+        return cursor.fetchall()

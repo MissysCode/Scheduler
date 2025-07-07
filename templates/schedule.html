@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Schedule</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        h1 { color: #444; }
+        ul { list-style: none; padding: 0; }
+        li { padding: 8px 0; border-bottom: 1px solid #ddd; }
+    </style>
+</head>
+<body>
+    <h1>Today's Schedule</h1>
+    <ul>
+        {% for task in tasks %}
+            <li><strong>{{ task.time }}</strong> — {{ task.task }}</li>
+        {% else %}
+            <li>No tasks yet!</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
