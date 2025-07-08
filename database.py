@@ -12,6 +12,13 @@ def init_db():
                 task TEXT NOT NULL
             )
         """)
+        cursor.execute("""
+            CREATE TABLE IF NOT EXISTS recurring_tasks (
+                id INTEGER PRIMARY KEY AUTOINCREMENT,
+                name TEXT NOT NULL,
+                default_time TEXT
+            )
+        """)
         conn.commit()
 
 def add_task(time, task):
