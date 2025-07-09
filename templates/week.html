@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Week View</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1>Weekly Planner</h1>
+
+    <!-- Task Pool -->
+    <div class="task-pool">
+        {% for task in unscheduled %}
+            <div class="task-pool-item">
+                <button class="task-toggle" onclick="toggleAssignOptions({{ task.id }})">{{ task.task }}</button>
+                <div id="assign-{{ task.id }}" class="assign-options" style="display:none;">
+                    {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
+                        <form method="POST" action="/assign/{{ task.id }}/{{ day.lower() }}" style="display:inline;">
+                            <button type="submit" style="margin: 2px;">{{ day[0] }}</button>
+                        </form>
+                    {% endfor %}
+                </div>
+            </div>
+        {% else %}
+            <p>No unscheduled tasks!</p>
+        {% endfor %}
+    </div>
+
+    <h2>Add New Task</h2>
+    <form method="POST" action="/tasks/form-add" class="task-form">
+        <input type="text" name="task" placeholder="Task description" required>
+        <br>
+        <button type="submit">Add Task</button>
+    </form>
+
+    <!-- Week View -->
+    <h2>Week</h2>
+<div class="week-view">
+    {% for day, tasks in week_tasks.items() %}
+        <div class="week-day">
+            <h3>{{ day }}</h3>
+            <ul>
+                {% for task in tasks %}
+                    <li>
+                        {{ task.task }}
+                        <form method="POST" action="/tasks/delete/{{ task.id }}" style="display:inline;">
+                            <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                    </li>
+                {% else %}
+                    <li>No tasks yet!</li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endfor %}
+</div>
+
+<script>
+    function toggleAssignOptions(taskId) {
+        const options = document.getElementById(`assign-${taskId}`);
+        if (options.style.display === "none") {
+            options.style.display = "block";
+        } else {
+            options.style.display = "none";
+        }
+    }
+    </script>
+    
+</body>
+</html>
