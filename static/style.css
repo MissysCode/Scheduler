@@ -45,6 +45,14 @@ button:hover {
     background-color: #d63b70;
 }
 
+.main-layout {
+    display: flex;
+    gap: 40px;
+    width: 100%;
+    max-width: 1400px;
+    margin-top: 30px;
+}
+
 .delete-button {
     background-color: #e74c3c;
     color: white;
@@ -91,14 +99,6 @@ button:hover {
     color: #b03c70;
 }
 
-.task-pool {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    margin-bottom: 30px;
-    justify-content: center;
-}
-
 .task-pool-item {
     background-color: white;
     border-radius: 8px;
@@ -106,6 +106,24 @@ button:hover {
     box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
     text-align: center;
 }
+
+.task-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    justify-content: flex-start;
+}
+
+/* Left column: Task Pool */
+.task-pool-column {
+    flex: 1;
+    min-width: 200px;
+}
+
+/* Right column: Week Grid */
+.week-column {
+    flex: 3;
+}   
 
 .task-toggle {
     background-color: #e75480;
