@@ -6,19 +6,23 @@
         <h2>Task Pool</h2>
         <div class="task-pool">
             {% for task in unscheduled %}
-                <div class="task-pool-item">
-                    <button class="task-toggle" onclick="toggleAssignOptions({{ task.id }})">{{ task.task }}</button>
-                    <div id="assign-{{ task.id }}" class="assign-options" style="display:none;">
-                        {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
-                            <form method="POST" action="/assign/{{ task.id }}/{{ day.lower() }}" style="display:inline;">
-                                <button type="submit" style="margin: 2px;">{{ day[0] }}</button>
-                            </form>
-                        {% endfor %}
-                    </div>
+            {% set color_class = 'color-' ~ ((loop.index0 % 7) + 1) %}
+            <div class="task-pool-item">
+                <button class="task-toggle {{ task.color_class }}" onclick="toggleAssignOptions({{ task.id }})">
+                    {{ task.task }}
+                </button>
+                <div id="assign-{{ task.id }}" class="assign-options" style="display:none;">
+                    {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Notes"] %}
+                        <form method="POST" action="/assign/{{ task.id }}/{{ day.lower() }}" style="display:inline;">
+                            <button type="submit" style="margin: 2px;">{{ day[0] }}</button>
+                        </form>
+                    {% endfor %}
                 </div>
-            {% else %}
-                <p>No unscheduled tasks!</p>
-            {% endfor %}
+            </div>
+        {% else %}
+            <p>No unscheduled tasks!</p>
+        {% endfor %}
+        
         </div>
 
         <!-- Add New Task -->
@@ -30,28 +34,29 @@
         </form>
     </div>
 
-    <!-- Week View Column -->
-    <div class="week-column">
-        <h2>Week</h2>
-        <div class="week-view">
-            {% for day, tasks in week_tasks.items() %}
-                <div class="week-day">
-                    <h3>{{ day }}</h3>
-                    <ul>
-                        {% for task in tasks %}
-                            <li>
-                                {{ task.task }}
-                                <form method="POST" action="/tasks/delete/{{ task.id }}" style="display:inline;">
-                                    <button type="submit" class="delete-button">Delete</button>
-                                </form>
-                            </li>
-                        {% else %}
-                            <li>No tasks yet!</li>
-                        {% endfor %}
-                    </ul>
-                </div>
-            {% endfor %}
-        </div>
+<!-- Week View Column -->
+<div class="week-column">
+    <h2>Week</h2>
+    <div class="week-view">
+        {% for day, tasks in week_tasks.items() %}
+            <div class="week-day">
+                <h3>{{ day }}</h3>
+                <ul>
+                    {% for task in tasks %}
+                      {% set color_class = task.color_class %}
+                      <li style="margin-bottom: 8px;">
+                        <button class="task-toggle {{ color_class }}" disabled>
+                          {{ task.task }}
+                        </button>
+                        <form method="POST" action="/tasks/delete/{{ task.id }}" style="display:inline;">
+                          <button type="submit" class="delete-button">Delete</button>
+                        </form>
+                      </li>
+                    {% else %}
+                      <li>No tasks yet!</li>
+                    {% endfor %}
+                  </ul>
+            </div>
+        {% endfor %}
     </div>
-
 </div>

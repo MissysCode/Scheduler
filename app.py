@@ -14,12 +14,33 @@ def week_view():
 
     # Build a dict of day_name → list of tasks
     from datetime import datetime
-    week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
+    week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Notes"]}
 
     for task in all_tasks:
         if task[2]:  # scheduled_date is not None
             day_name = datetime.fromisoformat(task[2]).strftime("%A")
             week_tasks[day_name].append({"id": task[0], "task": task[1]})
+    
+    # Get all unique task names and assign a color index to each
+    unique_names = sorted(set(t[1] for t in all_tasks))
+    name_to_color = {name: (i % 7) + 1 for i, name in enumerate(unique_names)}
+
+    # Include color info in each task
+    unscheduled_tasks = [
+        {"id": t[0], "task": t[1], "color_class": f"color-{name_to_color[t[1]]}"}
+        for t in all_tasks if t[2] is None
+    ]
+
+    week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Notes"]}
+    for task in all_tasks:
+        color_class = f"color-{name_to_color[task[1]]}"
+        if task[2]:
+            day_name = datetime.fromisoformat(task[2]).strftime("%A")
+            if day_name in week_tasks:
+                week_tasks[day_name].append({"id": task[0], "task": task[1], "color_class": color_class})
+        else:
+            # already handled above
+            continue
 
     return render_template("week.html", unscheduled=unscheduled_tasks, week_tasks=week_tasks)
 
@@ -43,7 +64,7 @@ def delete_task_route(task_id):
 @app.route("/assign/<int:task_id>/<day>", methods=["POST"])
 def assign_task(task_id, day):
     # Convert day name ("monday") to date
-    day_names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+    day_names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "notes"]
     today = date.today()
     today_weekday = today.weekday()  # Monday = 0
     target_weekday = day_names.index(day.lower())
