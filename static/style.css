@@ -68,7 +68,9 @@ button:hover {
 .delete-button {
     background-color: #e74c3c;
     padding: 6px 12px;
-    font-size: 0.85em;
+    font-size: 0.75em;
+    line-height: 1;
+    height: auto;
 }
 
 .delete-button:hover {
@@ -162,7 +164,7 @@ button:hover {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    min-height: 140px;
+    min-height: 180px;
     border: 1px solid rgba(0, 0, 0, 0.05);
 }
 
@@ -179,6 +181,30 @@ button:hover {
     transform: translateY(-2px);
     transition: 0.2s ease;
 }
+
+.task-row {
+    margin-bottom: 8px;
+  }
+
+  .task-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .task-content .task-toggle {
+    flex-grow: 1;
+    width: 100%; /* Ensures the button fills remaining space */
+  }
+
+  .task-content:hover {
+    background-color: #fafafa;
+    border-radius: 6px;
+}
+
+  .task-content form {
+    flex-shrink: 0; /* Prevents delete button from shrinking */
+  }
 
 @media (max-width: 768px) {
     .main-layout {

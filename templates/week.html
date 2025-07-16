@@ -1,14 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Weekly Task Scheduler</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
 <div class="main-layout">
 
     <!-- Task Pool Column -->
     <div class="task-pool-column">
-        <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
         <h2>Task Pool</h2>
         <div class="task-pool">
             {% for task in unscheduled %}
             {% set color_class = 'color-' ~ ((loop.index0 % 7) + 1) %}
             <div class="task-pool-item">
-                <button class="task-toggle {{ task.color_class }}" onclick="toggleAssignOptions({{ task.id }})">
+                <button class="task-toggle {{ color_class }}" onclick="toggleAssignOptions({{ task.id }})">
                     {{ task.task }}
                 </button>
                 <div id="assign-{{ task.id }}" class="assign-options" style="display:none;">
@@ -19,10 +27,9 @@
                     {% endfor %}
                 </div>
             </div>
-        {% else %}
-            <p>No unscheduled tasks!</p>
-        {% endfor %}
-        
+            {% else %}
+                <p>No unscheduled tasks!</p>
+            {% endfor %}
         </div>
 
         <!-- Add New Task -->
@@ -34,29 +41,45 @@
         </form>
     </div>
 
-<!-- Week View Column -->
-<div class="week-column">
-    <h2>Week</h2>
-    <div class="week-view">
-        {% for day, tasks in week_tasks.items() %}
+    <!-- Week View Column -->
+    <div class="week-column">
+        <h2>Week</h2>
+        <div class="week-view">
+            {% for day, tasks in week_tasks.items() %}
             <div class="week-day">
                 <h3>{{ day }}</h3>
                 <ul>
                     {% for task in tasks %}
-                      {% set color_class = task.color_class %}
-                      <li style="margin-bottom: 8px;">
-                        <button class="task-toggle {{ color_class }}" disabled>
-                          {{ task.task }}
-                        </button>
-                        <form method="POST" action="/tasks/delete/{{ task.id }}" style="display:inline;">
-                          <button type="submit" class="delete-button">Delete</button>
-                        </form>
+                    {% set color_class = task.color_class %}
+                    <li class="task-row">
+                        <div class="task-content">
+                          <button class="task-toggle {{ color_class }}" disabled>
+                            {{ task.task }}
+                          </button>
+                          <form method="POST" action="/tasks/delete/{{ task.id }}">
+                            <button type="submit" class="delete-button">✕</button>
+                          </form>
+                        </div>
                       </li>
                     {% else %}
-                      <li>No tasks yet!</li>
+                    <li>No tasks yet!</li>
                     {% endfor %}
-                  </ul>
+                </ul>
             </div>
-        {% endfor %}
+            {% endfor %}
+        </div>
     </div>
+
 </div>
+
+<!-- Toggle Assign Options Script -->
+<script>
+    window.toggleAssignOptions = function(taskId) {
+      const el = document.getElementById('assign-' + taskId);
+      if (!el) return;
+      el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
+    };
+  </script>
+
+</body>
+</html>
