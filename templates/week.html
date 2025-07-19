@@ -14,9 +14,8 @@
         <h2>Task Pool</h2>
         <div class="task-pool">
             {% for task in unscheduled %}
-            {% set color_class = 'color-' ~ ((loop.index0 % 7) + 1) %}
             <div class="task-pool-item">
-                <button class="task-toggle {{ color_class }}" onclick="toggleAssignOptions({{ task.id }})">
+                <button class="task-toggle {{ task.color_class }}" onclick="toggleAssignOptions('{{ task.id }}')">
                     {{ task.task }}
                 </button>
                 <div id="assign-{{ task.id }}" class="assign-options" style="display:none;">
