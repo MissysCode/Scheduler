@@ -12,13 +12,6 @@ def init_db():
                 scheduled_date TEXT
             )
         """)
-        cursor.execute("""
-            CREATE TABLE IF NOT EXISTS recurring_tasks (
-                id INTEGER PRIMARY KEY AUTOINCREMENT,
-                name TEXT NOT NULL,
-                default_time TEXT
-            )
-        """)
         conn.commit()
 
 def add_task(task, scheduled_date=None):

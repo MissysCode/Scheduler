@@ -26,10 +26,8 @@ def week_view():
     name_to_color = {name: (i % 7) + 1 for i, name in enumerate(unique_names)}
 
     # Include color info in each task
-    unscheduled_tasks = [
-        {"id": t[0], "task": t[1], "color_class": f"color-{name_to_color[t[1]]}"}
-        for t in all_tasks if t[2] is None
-    ]
+    unscheduled_tasks = [{"id": t[0], "task": t[1], "color_class": f"color-{name_to_color[t[1]]}"}
+        for t in all_tasks if t[2] is None]
 
     week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Notes"]}
     for task in all_tasks:
