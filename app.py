@@ -14,7 +14,7 @@ def week_view():
 
     # Build a dict of day_name → list of tasks
     from datetime import datetime
-    week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Notes"]}
+    week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
 
     for task in all_tasks:
         if task[2]:  # scheduled_date is not None
@@ -29,7 +29,7 @@ def week_view():
     unscheduled_tasks = [{"id": t[0], "task": t[1], "color_class": f"color-{name_to_color[t[1]]}"}
         for t in all_tasks if t[2] is None]
 
-    week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Notes"]}
+    week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
     for task in all_tasks:
         color_class = f"color-{name_to_color[task[1]]}"
         if task[2]:
@@ -56,19 +56,24 @@ def add_task_form():
 @app.route("/tasks/delete/<task_id>", methods=["POST"])
 def delete_task_route(task_id):
     delete_task(task_id)
-    return redirect("/week")
+    return redirect("/week")    
 
 # Assign a task to a day of the week (relative to today)
 @app.route("/assign/<int:task_id>/<day>", methods=["POST"])
 def assign_task(task_id, day):
     # Convert day name ("monday") to date
-    day_names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday", "notes"]
+    day_names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+
+    print(f"[DEBUG] Received day: {day}")
+    
     today = date.today()
     today_weekday = today.weekday()  # Monday = 0
     target_weekday = day_names.index(day.lower())
     delta_days = (target_weekday - today_weekday + 7) % 7
     target_date = today + timedelta(days=delta_days)
     scheduled_date = target_date.isoformat()  # "YYYY-MM-DD"
+
+    print(f"[DEBUG] Received day: {scheduled_date}")
 
     assign_task_to_day(task_id, scheduled_date)
     return redirect("/week")

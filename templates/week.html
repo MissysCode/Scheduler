@@ -19,7 +19,7 @@
                     {{ task.task }}
                 </button>
                 <div id="assign-{{ task.id }}" class="assign-options" style="display:none;">
-                    {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday", "Notes"] %}
+                    {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
                         <form method="POST" action="/assign/{{ task.id }}/{{ day.lower() }}" style="display:inline;">
                             <button type="submit" style="margin: 2px;">{{ day[0] }}</button>
                         </form>
