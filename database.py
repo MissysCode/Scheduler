@@ -21,7 +21,7 @@ def init_db():
         conn.commit()
     backfill_color_classes()
 
-def add_task(task, scheduled_date=None):
+def add_task(task, scheduled_date=None, color_class="color-1"):
     color_index = hash(task.strip().lower()) % 7 + 1
     color_class = f"color-{color_index}"
 

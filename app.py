@@ -39,7 +39,19 @@ def add_task_form():
     if not task:
         return "Missing task", 400
 
-    add_task(task)
+    # Determine color_class based on existing unique task names
+    all_tasks = get_all_tasks()
+    existing_names = sorted(set(t[1] for t in all_tasks))
+    name_to_color = {name: (i % 7) + 1 for i, name in enumerate(existing_names)}
+
+    if task in name_to_color:
+        color_index = name_to_color[task]
+    else:
+        color_index = (len(existing_names) % 7) + 1
+
+    color_class = f"color-{color_index}"
+
+    add_task(task, None, color_class)
     return redirect("/week")
 
 @app.route("/tasks/delete/<task_id>", methods=["POST"])
