@@ -49,17 +49,16 @@
                 <h3>{{ day }}</h3>
                 <ul>
                     {% for task in tasks %}
-                    {% set color_class = task.color_class %}
                     <li class="task-row">
                         <div class="task-content">
-                          <button class="task-toggle {{ color_class }}" disabled>
-                            {{ task.task }}
-                          </button>
-                          <form method="POST" action="/tasks/delete/{{ task.id }}">
-                            <button type="submit" class="delete-button">✕</button>
-                          </form>
+                            <button class="task-toggle {{ task.color_class }}" disabled>
+                                {{ task.task }}
+                            </button>
+                            <form method="POST" action="/tasks/delete/{{ task.id }}">
+                                <button type="submit" class="delete-button">✕</button>
+                            </form>
                         </div>
-                      </li>
+                    </li>
                     {% else %}
                     <li>No tasks yet!</li>
                     {% endfor %}
