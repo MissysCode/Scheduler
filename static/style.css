@@ -104,7 +104,7 @@ button:hover {
     display: flex;
     gap: 40px;
     width: 100%;
-    max-width: 1400px;
+    max-width: 100%;
     margin-top: 30px;
 }
 
@@ -124,7 +124,7 @@ button:hover {
 .task-pool {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 10px 30px;
+    gap: 10px 15px;
 }
 
 .task-pool-item {

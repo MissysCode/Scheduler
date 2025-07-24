@@ -22,12 +22,25 @@ def init_db():
     backfill_color_classes()
 
 def add_task(task, scheduled_date=None, color_class="color-1"):
-    color_index = hash(task.strip().lower()) % 7 + 1
-    color_class = f"color-{color_index}"
+    task_normalized = task.strip().lower()
 
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
-        cursor.execute("INSERT INTO tasks (task, scheduled_date, color_class) VALUES (?, ?, ?)", (task, scheduled_date, color_class))
+
+        # Check if a task with the same name exists
+        cursor.execute("SELECT color_class FROM tasks WHERE LOWER(task) = ?", (task_normalized,))
+        existing = cursor.fetchone()
+
+        if existing and existing[0]:
+            color_class = existing[0]
+        else:
+            color_index = hash(task_normalized) % 7 + 1
+            color_class = f"color-{color_index}"
+
+        cursor.execute(
+            "INSERT INTO tasks (task, scheduled_date, color_class) VALUES (?, ?, ?)",
+            (task, scheduled_date, color_class)
+        )
         conn.commit()
 
 def delete_task(task_id):
