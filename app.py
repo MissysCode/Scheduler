@@ -1,4 +1,4 @@
-from flask import Flask, jsonify, request, render_template, redirect
+from flask import Flask, request, render_template, redirect
 from database import init_db, add_task, get_all_tasks, delete_task, assign_task_to_day
 from datetime import date, timedelta, datetime
 
@@ -6,27 +6,26 @@ app = Flask(__name__)
 init_db()
 
 @app.route("/week", methods=["GET"])
-def week_view():
-    all_tasks = get_all_tasks()
+def week_view():   
+    all_tasks = list(get_all_tasks())
 
     # Split tasks into unscheduled and scheduled
     unscheduled_tasks = [
-        {"id": t[0], "task": t[1], "color_class": t[3]}
-        for t in all_tasks if t[2] is None
+        {"id": t.task_id, "task": t.task_name, "color_class": t.color_class}
+        for t in all_tasks if t.scheduled_date is None
     ]
 
     # Prepare empty week structure
     week_tasks = {day: [] for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]}
 
     for task in all_tasks:
-        task_id, task_name, scheduled_date, color_class = task
-        if scheduled_date:
-            day_name = datetime.fromisoformat(scheduled_date).strftime("%A")
+        if task.scheduled_date:
+            day_name = datetime.fromisoformat(task.scheduled_date).strftime("%A")
             if day_name in week_tasks:
                 week_tasks[day_name].append({
-                    "id": task_id,
-                    "task": task_name,
-                    "color_class": color_class
+                    "id": task.task_id,
+                    "task": task.task_name,
+                    "color_class": task.color_class
                 })
 
     return render_template("week.html", unscheduled=unscheduled_tasks, week_tasks=week_tasks)
@@ -41,7 +40,7 @@ def add_task_form():
 
     # Determine color_class based on existing unique task names
     all_tasks = get_all_tasks()
-    existing_names = sorted(set(t[1] for t in all_tasks))
+    existing_names = sorted(set(t.task_name for t in all_tasks))
     name_to_color = {name: (i % 7) + 1 for i, name in enumerate(existing_names)}
 
     if task in name_to_color:
@@ -66,7 +65,7 @@ def assign_task(task_id, day):
     day_names = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
 
     print(f"[DEBUG] Received day: {day}")
-    
+ 
     today = date.today()
     today_weekday = today.weekday()  # Monday = 0
     target_weekday = day_names.index(day.lower())

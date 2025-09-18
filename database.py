@@ -1,6 +1,14 @@
 import sqlite3
+from dataclasses import dataclass
 
 DB_NAME = "schedule.db"
+
+@dataclass
+class Task:
+    task_id: int
+    task_name: str
+    scheduled_date: str
+    color_class: str
 
 def init_db():
     with sqlite3.connect(DB_NAME) as conn:
@@ -15,10 +23,24 @@ def init_db():
         # Check if 'color_class' column exists
         cursor.execute("PRAGMA table_info(tasks)")
         columns = [col[1] for col in cursor.fetchall()]
+
+        # If you add new fields, you can copy the following code for a new field.
+        # Poor man's database migrations.
         if "color_class" not in columns:
             cursor.execute("ALTER TABLE tasks ADD COLUMN color_class TEXT")
+        # E.g.
+        # if "my_new_field" not in columns:
+        #     cursor.execute(...)
+        #
+        # Also, write a new backfill() function, if approopriate below.
+        # Example: backfill_color_classes()
+        #
+        # If there ever needs to be a type of migration that cannot be done simply
+        # by adding a column, then something more sophisticated has to be done here.
+        #
 
         conn.commit()
+
     backfill_color_classes()
 
 def add_task(task, scheduled_date=None, color_class="color-1"):
@@ -59,8 +81,10 @@ def get_all_tasks():
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
         cursor.execute("SELECT id, task, scheduled_date, color_class FROM tasks ORDER BY scheduled_date")
-        return cursor.fetchall()
-    
+        def to_task(args):
+            return Task(*args)
+        return map(to_task, cursor.fetchall())
+
 def backfill_color_classes():
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
