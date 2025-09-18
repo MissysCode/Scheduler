@@ -79,4 +79,4 @@ def assign_task(task_id, day):
     return redirect("/week")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=5001)
