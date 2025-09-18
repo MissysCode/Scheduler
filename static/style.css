@@ -171,6 +171,9 @@ button:hover {
     justify-content: space-between;
     min-height: 220px;
     border: 1px solid rgba(0, 0, 0, 0.05);
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 
 .week-day h3 {
@@ -201,8 +204,10 @@ button:hover {
 
 .task-content .task-toggle {
     flex-grow: 1;
-    width: 100%;
-}
+    width: 100%; /* Ensures the button fills remaining space */
+    max-width: 100%;
+    white-space: normal;
+  }
 
 .task-content:hover {
     background-color: #fafafa;
