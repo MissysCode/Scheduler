@@ -14,7 +14,7 @@ if [[ $confirm == "y" ]]; then                                    #  |
                                                                   #  |
     # KEEP IN SYNC WITH THE DRY RUN COMMAND  <-----------------------+
     rsync --delete -av static prinsessa:/var/www/html/scheduler/
-    rsync --exclude venv --exclude .git --delete -av . prinsessa:~/backend-scheduler-missyscode.com
+    rsync --exclude __pycache__ --exclude venv --exclude .git --delete -av . prinsessa:~/backend-scheduler-missyscode.com
 
     echo "Rsync completed successfully."
 else
