@@ -2,7 +2,15 @@ from flask import Flask, request, render_template, redirect
 from database import init_db, add_task, get_all_tasks, delete_task, assign_task_to_day
 from datetime import date, timedelta, datetime
 
+# Use the /scheduler/static Flask line if pushing to production.
+# When developing locally, just use the app = Flask(__name__)
+#
+# TODO: make this all automatic
+#
+
+# app = Flask(__name__, static_url_path='/scheduler/static/')
 app = Flask(__name__)
+
 init_db()
 
 @app.route("/week", methods=["GET"])
