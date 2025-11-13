@@ -1,4 +1,4 @@
-/* ========== Color Palette ========== */
+/* ========== Task Color Palette ========== */
 .color-1 { background-color: #f8b195; } /* peach */
 .color-2 { background-color: #f67280; } /* coral pink */
 .color-3 { background-color: #c06c84; } /* dusty rose */
@@ -7,224 +7,263 @@
 .color-6 { background-color: #99b898; } /* mint */
 .color-7 { background-color: #f2d7d5; } /* light blush */
 
-/* ========== Base Styles ========== */
+/* ========== Base ========== */
 * {
     box-sizing: border-box;
 }
 
 body {
-    font-family: Arial, sans-serif;
-    margin: 40px;
-    background-color: #f7f7f7;
-    color: #333;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    margin: 0;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, "Inter", sans-serif;
+    background: linear-gradient(135deg, #fff7fb, #fef9ff);
+    color: #1f2933;
 }
 
-h1, h2 {
+.planner-page {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 16px 48px;
+}
+
+/* Header */
+.planner-header h1 {
+    font-size: 2.1rem;
+    margin: 0 0 4px;
+    color: #1f2933;
+}
+
+.planner-header p {
+    margin: 0 0 24px;
+    color: #6b7280;
+    font-size: 0.95rem;
+}
+
+.section-title {
+    font-size: 1.1rem;
     color: #b03c70;
-    margin-bottom: 10px;
+    margin: 24px 0 12px;
 }
 
-/* ========== Typography ========== */
+/* Lists */
 ul {
     list-style: none;
     padding: 0;
-    margin-top: 10px;
+    margin: 0;
 }
 
-li {
-    padding: 10px 0;
-    border-bottom: 1px solid #eee;
+/* ========== Week Cards ========== */
+.week-section {
+    margin-top: 8px;
 }
 
-li:last-child {
+.week-view {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+/* Day cards */
+.week-day {
+    background-color: #ffffff;
+    border-radius: 18px;
+    padding: 18px 18px 14px;
+    box-shadow: 0 10px 25px rgba(15,23,42,0.06);
+    display: flex;
+    flex-direction: column;
+    min-height: 210px;
+    border-top: 4px solid transparent;
+}
+
+/* Pastel accent per day */
+.day-monday    { border-top-color: #FFD1DC; } /* peachy pink */
+.day-tuesday   { border-top-color: #FFE0AC; } /* apricot */
+.day-wednesday { border-top-color: #DFFFE1; } /* mint */
+.day-thursday  { border-top-color: #CCE5FF; } /* powder blue */
+.day-friday    { border-top-color: #E6CCFF; } /* lavender */
+.day-saturday  { border-top-color: #FFFACD; } /* lemon */
+.day-sunday    { border-top-color: #FFDAB9; } /* light coral */
+
+.week-day-header {
     margin-bottom: 10px;
 }
 
-/* ========== Forms & Inputs ========== */
-input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    margin: 6px 0 12px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
+.week-day-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #111827;
 }
 
-/* ========== Buttons ========== */
-button {
-    background-color: #e75480;
-    color: white;
-    padding: 10px 16px;
+/* Hover */
+.week-day:hover {
+    box-shadow: 0 14px 30px rgba(15,23,42,0.12);
+    transform: translateY(-2px);
+    transition: 0.2s ease;
+}
+
+/* ========== Tasks in Cards ========== */
+.task-list {
+    flex: 1;
+}
+
+.task-row {
+    margin-bottom: 6px;
+}
+
+.task-content {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-right: 44px; /* space for sliding delete */
+}
+
+/* Task pill */
+.task-toggle {
+    color: #ffffff;
     border: none;
-    border-radius: 4px;
+    border-radius: 999px;
+    padding: 8px 12px;
+    width: 100%;
+    text-align: left;
+    font-weight: 500;
     cursor: pointer;
-    transition: background-color 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    white-space: normal;
 }
 
-button:hover {
-    background-color: #d63b70;
-    transform: translateY(-1px);
+/* Empty state */
+.empty-state {
+    text-align: center;
+    font-size: 0.9rem;
+    color: #c4c4d0;
+    margin: 16px 0;
 }
 
+/* ========== Sliding Delete ========== */
+.delete-form {
+    position: absolute;
+    top: 50%;
+    right: 8px;
+    transform: translate(100%, -50%);
+    opacity: 0;
+    transition: transform 0.2s ease-out, opacity 0.2s ease-out;
+}
+
+/* When show-delete is set on parent */
+.task-content.show-delete .delete-form {
+    transform: translate(0, -50%);
+    opacity: 1;
+}
+
+/* Trash can button */
 .delete-button {
-    background-color: #e74c3c;
-    padding: 6px 12px;
-    font-size: 0.75em;
-    line-height: 1;
-    height: auto;
+    width: 32px;
+    height: 32px;
+    border-radius: 999px;
+    padding: 0;
+    border: none;
+    background-color: #ffffff;
+    color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
 }
 
 .delete-button:hover {
     background-color: #c0392b;
 }
 
-.task-toggle {
-    color: white;
+/* ========== Add Task Area ========== */
+.add-task-area {
+    margin-top: 12px;
+}
+
+/* Collapsed vs expanded */
+.add-task-area.collapsed .task-form-inline {
+    display: none;
+}
+.add-task-area.collapsed .add-trigger {
+    display: inline-flex;
+}
+
+.add-task-area.expanded .task-form-inline {
+    display: flex;
+}
+.add-task-area.expanded .add-trigger {
+    display: none;
+}
+
+/* Round + trigger button */
+.add-trigger {
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
     border: none;
-    border-radius: 6px;
-    padding: 10px 14px;
-    width: 100%;
+    background-color: #b03c70;
+    color: #ffffff;
+    font-size: 1.4rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     cursor: pointer;
-    font-weight: bold;
-    transition: transform 0.2s ease;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    box-shadow: 0 6px 16px rgba(176, 60, 112, 0.35);
+    transition: background-color 0.15s ease, transform 0.08s ease,
+                box-shadow 0.15s ease;
 }
 
-.task-toggle:hover {
-    filter: brightness(0.95);
+.add-trigger:hover {
+    background-color: #932e5d;
+    transform: translateY(-1px);
 }
 
-/* ========== Layout: Main & Columns ========== */
-.main-layout {
-    display: flex;
-    gap: 40px;
-    width: 100%;
-    max-width: 100%;
-    margin-top: 30px;
-}
-
-.task-pool-column {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    flex: 1;
-    min-width: 200px;
-}
-
-.week-column {
-    flex: 3;
-}
-
-/* ========== Task Pool ========== */
-.task-pool {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px 15px;
-}
-
-.task-pool-item {
-    background-color: white;
-    border-radius: 8px;
-    padding: 12px 10px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    width: 100%;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    word-wrap: break-word;
-}
-
-.assign-options {
-    margin-top: 8px;
-}
-
-/* ========== Add Task Form ========== */
-.task-form {
-    padding: 20px;
-    background-color: white;
-    border-radius: 8px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    width: 100%;
-}
-
-/* ========== Week Grid ========== */
-.week-view {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    width: 100%;
-    max-width: 1200px;
-    margin-top: 20px;
-}
-
-.week-day {
-    background-color: white;
-    border-radius: 8px;
-    padding: 16px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 220px;
-    border: 1px solid rgba(0, 0, 0, 0.05);
-    word-wrap: break-word;
-    overflow-wrap: break-word;
-    word-break: break-word;
-}
-
-.week-day h3 {
-    background-color: #fce4ec;
-    padding: 6px;
-    border-radius: 4px;
-    font-weight: bold;
-}
-
-/* Hover Effects */
-.task-pool-item:hover,
-.week-day:hover {
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    transform: translateY(-2px);
-    transition: 0.2s ease;
-}
-
-/* ========== Task Item Display ========== */
-.task-row {
-    margin-bottom: 8px;
-}
-
-.task-content {
+/* Inline add form */
+.task-form-inline {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
-.task-content .task-toggle {
-    flex-grow: 1;
-    width: 100%; /* Ensures the button fills remaining space */
-    max-width: 100%;
-    white-space: normal;
-  }
-
-.task-content:hover {
-    background-color: #fafafa;
-    border-radius: 6px;
+/* Input same height as button */
+.task-form-inline input[type="text"] {
+    flex: 1;
+    height: 40px;
+    border-radius: 999px;
+    border: 1px solid #d1d5db;
+    padding: 0 14px;
+    font-size: 0.95rem;
 }
 
-.task-content form {
-    flex-shrink: 0;
+/* Submit button */
+.btn-add-task {
+    height: 40px;
+    padding: 0 18px;
+    border-radius: 999px;
+    border: none;
+    background-color: #b03c70;
+    color: #ffffff;
+    font-size: 1.1rem;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 6px 14px rgba(176, 60, 112, 0.3);
+    transition: background-color 0.15s ease, transform 0.08s ease,
+                box-shadow 0.15s ease;
 }
 
-/* ========== Responsive Layout ========== */
-@media (max-width: 768px) {
-    .main-layout {
-        flex-direction: column;
-    }
+.btn-add-task:hover {
+    background-color: #932e5d;
+    transform: translateY(-1px);
+}
 
-    .week-view {
-        grid-template-columns: repeat(2, 1fr);
+/* ========== Responsive ========== */
+@media (max-width: 640px) {
+    .planner-page {
+        padding: 20px 12px 24px;
     }
 }

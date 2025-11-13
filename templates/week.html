@@ -7,77 +7,103 @@
 </head>
 <body>
 
-<div class="main-layout">
+<div class="planner-page">
 
-    <!-- Task Pool Column -->
-    <div class="task-pool-column">
-        <h2>Task Pool</h2>
-        <div class="task-pool">
-            {% for task in unscheduled %}
-            <div class="task-pool-item">
-                <button class="task-toggle {{ task.color_class }}" onclick="toggleAssignOptions('{{ task.id }}')">
-                    {{ task.task }}
-                </button>
-                <div id="assign-{{ task.id }}" class="assign-options" style="display:none;">
-                    {% for day in ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"] %}
-                        <form method="POST" action="/assign/{{ task.id }}/{{ day.lower() }}" style="display:inline;">
-                            <button type="submit" style="margin: 2px;">{{ day[0] }}</button>
-                        </form>
-                    {% endfor %}
-                </div>
-            </div>
-            {% else %}
-                <p>No unscheduled tasks!</p>
-            {% endfor %}
-        </div>
+    <!-- Top header -->
+    <header class="planner-header">
+        <h1>Weekly Planner</h1>
+        <p>Plan your week ahead</p>
+    </header>
 
-        <!-- Add New Task -->
-        <h2>Add New Task</h2>
-        <form method="POST" action="/tasks/form-add" class="task-form">
-            <input type="text" name="task" placeholder="Task description" required>
-            <br>
-            <button type="submit">Add Task</button>
-        </form>
-    </div>
+    <!-- Week cards -->
+    <section class="week-section">
+        <h2 class="section-title">Week</h2>
 
-    <!-- Week View Column -->
-    <div class="week-column">
-        <h2>Week</h2>
         <div class="week-view">
             {% for day, tasks in week_tasks.items() %}
-            <div class="week-day">
-                <h3>{{ day }}</h3>
-                <ul>
+            <section class="week-day day-{{ day|lower }}">
+                <header class="week-day-header">
+                    <h3>{{ day }}</h3>
+                </header>
+
+                <!-- Task list -->
+                <ul class="task-list">
                     {% for task in tasks %}
                     <li class="task-row">
                         <div class="task-content">
-                            <button class="task-toggle {{ task.color_class }}" disabled>
+                            <!-- Click the task to reveal delete -->
+                            <button
+                                type="button"
+                                class="task-toggle {{ task.color_class }}"
+                                onclick="toggleDelete(this)"
+                            >
                                 {{ task.task }}
                             </button>
-                            <form method="POST" action="/tasks/delete/{{ task.id }}">
-                                <button type="submit" class="delete-button">✕</button>
+
+                            <form method="POST"
+                                  action="/tasks/delete/{{ task.id }}"
+                                  class="delete-form">
+                                <button type="submit" class="delete-button">🗑️</button>
                             </form>
                         </div>
                     </li>
                     {% else %}
-                    <li>No tasks yet!</li>
+                    <li class="empty-state">No tasks yet</li>
                     {% endfor %}
                 </ul>
-            </div>
+
+                <!-- Add task for this specific day -->
+                <div class="add-task-area collapsed" data-day="{{ day|lower }}">
+                    <!-- Collapsed state: only a round + button -->
+                    <button type="button"
+                            class="add-trigger"
+                            onclick="toggleAddTask(this)">
+                        +
+                    </button>
+
+                    <!-- Expanded state: input + submit -->
+                    <form method="POST"
+                          action="/tasks/add/{{ day|lower }}"
+                          class="task-form-inline">
+                        <input type="text"
+                               name="task"
+                               placeholder="Add a task"
+                               required
+                               list="task-suggestions-{{ day }}">
+                        <button type="submit" class="btn-add-task">+</button>
+                    </form>
+
+                    <!-- Suggestions from existing tasks in DB -->
+                    <datalist id="task-suggestions-{{ day }}">
+                        {% for name in task_names %}
+                            <option value="{{ name }}"></option>
+                        {% endfor %}
+                    </datalist>
+                </div>
+            </section>
             {% endfor %}
         </div>
-    </div>
+    </section>
 
 </div>
 
-<!-- Toggle Assign Options Script -->
 <script>
-    window.toggleAssignOptions = function(taskId) {
-      const el = document.getElementById('assign-' + taskId);
-      if (!el) return;
-      el.style.display = (el.style.display === 'none' || el.style.display === '') ? 'block' : 'none';
-    };
-  </script>
+function toggleDelete(taskButton) {
+    const row = taskButton.closest('.task-content');
+    if (!row) return;
+    row.classList.toggle('show-delete');
+}
+
+function toggleAddTask(triggerButton) {
+    const area = triggerButton.closest('.add-task-area');
+    if (!area) return;
+    area.classList.remove('collapsed');
+    area.classList.add('expanded');
+
+    const input = area.querySelector('input[name="task"]');
+    if (input) input.focus();
+}
+</script>
 
 </body>
 </html>
