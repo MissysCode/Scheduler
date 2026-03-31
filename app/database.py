@@ -10,7 +10,7 @@ class Task:
     scheduled_date: str
     color_class: str
 
-def init_db():
+def init_db(app):
     with sqlite3.connect(DB_NAME) as conn:
         cursor = conn.cursor()
         cursor.execute("""

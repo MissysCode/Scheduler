@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Weekly Task Scheduler</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
@@ -41,7 +41,7 @@
                             </button>
 
                             <form method="POST"
-                                  action="/tasks/delete/{{ task.id }}"
+                                  action="tasks/delete/{{ task.id }}"
                                   class="delete-form">
                                 <button type="submit" class="delete-button">🗑️</button>
                             </form>
@@ -63,7 +63,7 @@
 
                     <!-- Expanded state: input + submit -->
                     <form method="POST"
-                          action="/tasks/add/{{ day|lower }}"
+                          action="tasks/add/{{ day|lower }}"
                           class="task-form-inline">
                         <input type="text"
                                name="task"
