@@ -25,7 +25,6 @@ body {
     padding: 32px 16px 48px;
 }
 
-/* Header */
 .planner-header h1 {
     font-size: 2.1rem;
     margin: 0 0 4px;
@@ -44,7 +43,6 @@ body {
     margin: 24px 0 12px;
 }
 
-/* Lists */
 ul {
     list-style: none;
     padding: 0;
@@ -62,7 +60,6 @@ ul {
     gap: 20px;
 }
 
-/* Day cards */
 .week-day {
     background-color: #ffffff;
     border-radius: 18px;
@@ -70,11 +67,11 @@ ul {
     box-shadow: 0 10px 25px rgba(15,23,42,0.06);
     display: flex;
     flex-direction: column;
-    min-height: 210px;
+    min-height: 190px;
     border-top: 4px solid transparent;
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
-/* Pastel accent per day */
 .day-monday    { border-top-color: #FFD1DC; } /* peachy pink */
 .day-tuesday   { border-top-color: #FFE0AC; } /* apricot */
 .day-wednesday { border-top-color: #DFFFE1; } /* mint */
@@ -94,7 +91,6 @@ ul {
     color: #111827;
 }
 
-/* Hover */
 .week-day:hover {
     box-shadow: 0 14px 30px rgba(15,23,42,0.12);
     transform: translateY(-2px);
@@ -107,36 +103,41 @@ ul {
 }
 
 .task-row {
-    margin-bottom: 6px;
+    margin-bottom: 8px;
 }
 
 .task-content {
     display: flex;
     align-items: center;
     position: relative;
-    padding-right: 44px; /* space for sliding delete */
+    padding-right: 44px;
 }
 
-/* Task pill */
 .task-toggle {
     color: #ffffff;
     border: none;
     border-radius: 999px;
-    padding: 8px 12px;
+    padding: 10px 14px;
     width: 100%;
     text-align: left;
-    font-weight: 500;
+    font-weight: 600;
     cursor: pointer;
     box-shadow: 0 1px 3px rgba(0,0,0,0.1);
     white-space: normal;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* Empty state */
+.task-toggle:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 3px 8px rgba(0,0,0,0.12);
+}
+
 .empty-state {
     text-align: center;
-    font-size: 0.9rem;
-    color: #c4c4d0;
-    margin: 16px 0;
+    font-size: 0.95rem;
+    color: #9ca3af;
+    margin: 28px 0 0;
+    font-style: italic;
 }
 
 /* ========== Sliding Delete ========== */
@@ -149,25 +150,22 @@ ul {
     transition: transform 0.2s ease-out, opacity 0.2s ease-out;
 }
 
-/* When show-delete is set on parent */
 .task-content.show-delete .delete-form {
     transform: translate(0, -50%);
     opacity: 1;
 }
 
-/* Trash can button */
 .delete-button {
-    width: 32px;
     height: 32px;
     border-radius: 999px;
     padding: 0;
     border: none;
-    background-color: #ffffff;
+    background-color: #e74c3c;
     color: #ffffff;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.1rem;
+    font-size: 0.9rem;
     cursor: pointer;
     box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3);
 }
@@ -178,10 +176,13 @@ ul {
 
 /* ========== Add Task Area ========== */
 .add-task-area {
-    margin-top: 12px;
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    min-height: 40px;
 }
 
-/* Collapsed vs expanded */
 .add-task-area.collapsed .task-form-inline {
     display: none;
 }
@@ -196,7 +197,6 @@ ul {
     display: none;
 }
 
-/* Round + trigger button */
 .add-trigger {
     width: 40px;
     height: 40px;
@@ -220,14 +220,12 @@ ul {
     transform: translateY(-1px);
 }
 
-/* Inline add form */
 .task-form-inline {
     display: flex;
     align-items: center;
     gap: 8px;
 }
 
-/* Input same height as button */
 .task-form-inline input[type="text"] {
     flex: 1;
     height: 40px;
@@ -237,7 +235,6 @@ ul {
     font-size: 0.95rem;
 }
 
-/* Submit button */
 .btn-add-task {
     height: 40px;
     padding: 0 18px;
