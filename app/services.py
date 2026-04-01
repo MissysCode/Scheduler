@@ -27,8 +27,8 @@ def build_week_tasks(all_tasks):
             day_name = datetime.fromisoformat(task.scheduled_date).strftime("%A")
             if day_name in week_tasks:
                 week_tasks[day_name].append({
-                    "id": task.task_id,
-                    "task": task.task_name,
+                    "id": task.id,
+                    "task": task.task,
                     "color_class": task.color_class,
                 })
 
@@ -36,7 +36,7 @@ def build_week_tasks(all_tasks):
 
 
 def get_task_names(all_tasks):
-    return sorted(set(t.task_name for t in all_tasks))
+    return sorted(set(t.task for t in all_tasks))
 
 
 def get_color_class(task_name, all_tasks):
