@@ -49,7 +49,7 @@ ul {
     margin: 0;
 }
 
-/* ========== Week Cards ========== */
+/* ========== Week View ========== */
 .week-section {
     margin-top: 8px;
 }
@@ -97,7 +97,7 @@ ul {
     transition: 0.2s ease;
 }
 
-/* ========== Tasks in Cards ========== */
+/* ========== Tasks ========== */
 .task-list {
     flex: 1;
 }
@@ -140,7 +140,7 @@ ul {
     font-style: italic;
 }
 
-/* ========== Sliding Delete ========== */
+/* ========== Delete button ========== */
 .delete-form {
     position: absolute;
     top: 50%;
@@ -174,7 +174,7 @@ ul {
     background-color: #c0392b;
 }
 
-/* ========== Add Task Area ========== */
+/* ========== Add Task ========== */
 .add-task-area {
     margin-top: auto;
     display: flex;
