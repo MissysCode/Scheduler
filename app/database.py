@@ -55,23 +55,22 @@ def add_task(task, scheduled_date=None, color_class="color-1"):
 
 def delete_task(task_id):
     conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
+    conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
     conn.commit()
 
 def assign_task_to_day(task_id, scheduled_date):
     conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("UPDATE tasks SET scheduled_date = ? WHERE id = ?", (scheduled_date, task_id))
+    conn.execute(
+        "UPDATE tasks SET scheduled_date = ? WHERE id = ?",
+        (scheduled_date, task_id)
+    )
     conn.commit()
 
 def get_all_tasks():
     conn = get_db()
-    cursor = conn.cursor()
-    cursor.execute("SELECT id, task, scheduled_date, color_class FROM tasks ORDER BY scheduled_date")
-    def to_task(args):
-        return Task(*args)
-    return map(to_task, cursor.fetchall())
+    rows = conn.execute(
+    ).fetchall()
+    return [Task(*row) for row in rows]
 
 def backfill_color_classes():
     conn = get_db()
