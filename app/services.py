@@ -1,30 +1,35 @@
 from datetime import date, timedelta, datetime
+import hashlib
 
 DAY_NAMES = ["monday", "tuesday", "wednesday", "thursday", "friday", "saturday", "sunday"]
+COLOR_COUNT = 7
 
 
-def date_for_weekday(day: str) -> str:
-    """
-    Convert a weekday name like 'monday' to the next matching date
-    (including today) as an ISO string.
-    """
-    today = date.today()
-    today_weekday = today.weekday()
+def date_for_weekday(day: str, week_start: date) -> str:
+    if day.lower() not in DAY_NAMES:
+        raise ValueError("Invalid day")
+    
     target_weekday = DAY_NAMES.index(day.lower())
-    delta_days = (target_weekday - today_weekday + 7) % 7
-    target_date = today + timedelta(days=delta_days)
+    target_date = week_start + timedelta(days=target_weekday)
     return target_date.isoformat()
 
+#unless given a date, this function returns the week range based on today
+def get_week_range(reference_date=None):
+    if reference_date is None:
+        reference_date = date.today()
 
-def build_week_tasks(all_tasks):
+    start = reference_date - timedelta(days=reference_date.weekday())
+    end = start + timedelta(days=6)
+    return start, end
+
+def build_week_tasks(tasks):
     week_tasks = {
-        day: [] for day in
-        ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
+        day: [] for day in DAY_NAMES
     }
 
-    for task in all_tasks:
+    for task in tasks:
         if task.scheduled_date:
-            day_name = datetime.fromisoformat(task.scheduled_date).strftime("%A")
+            day_name = datetime.fromisoformat(task.scheduled_date).strftime("%A").lower()
             if day_name in week_tasks:
                 week_tasks[day_name].append({
                     "id": task.id,
@@ -34,18 +39,14 @@ def build_week_tasks(all_tasks):
 
     return week_tasks
 
+def get_task_names(tasks):
+    return sorted(set(t.task for t in tasks))
 
-def get_task_names(all_tasks):
-    return sorted(set(t.task for t in all_tasks))
+def normalize_task_name(task_name):
+    return task_name.strip().lower()
 
-
-def get_color_class(task_name, all_tasks):
-    existing_names = sorted(set(t.task_name for t in all_tasks))
-    name_to_color = {name: (i % 7) + 1 for i, name in enumerate(existing_names)}
-
-    if task_name in name_to_color:
-        color_index = name_to_color[task_name]
-    else:
-        color_index = (len(existing_names) % 7) + 1
-
+def get_color_class(task_name):
+    normalized = normalize_task_name(task_name)
+    digest = hashlib.md5(normalized.encode()).hexdigest()
+    color_index = int(digest, 16) % COLOR_COUNT + 1
     return f"color-{color_index}"
