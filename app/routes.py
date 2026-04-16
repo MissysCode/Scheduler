@@ -1,6 +1,7 @@
 from flask import request, render_template, redirect, url_for
-from .database import add_task, get_all_tasks, delete_task, assign_task_to_day
-from .services import date_for_weekday, build_week_tasks, get_task_names, get_color_class
+from datetime import date
+from .database import add_task, delete_task, assign_task_to_day, get_tasks_for_week
+from .services import date_for_weekday, build_week_tasks, get_task_names, get_color_class, get_week_range
 
 
 def register_routes(app):
@@ -10,23 +11,30 @@ def register_routes(app):
 
     @app.route("/week", methods=["GET"])
     def week_view():
-        all_tasks = list(get_all_tasks())
-        week_tasks = build_week_tasks(all_tasks)
-        task_names = get_task_names(all_tasks)
-        return render_template("week.html", week_tasks=week_tasks, task_names=task_names)
+        week_start, week_end = get_week_range()
+        tasks = get_tasks_for_week(week_start.isoformat(), week_end.isoformat())
+        week_tasks = build_week_tasks(tasks)
+        task_names = get_task_names(tasks)
+        return render_template(
+            "week.html", 
+            week_tasks=week_tasks, 
+            task_names=task_names, 
+            week_start=week_start.isoformat(),
+        )
 
     @app.route("/tasks/add/<day>", methods=["POST"])
     def add_task_for_day(day):
         task = request.form.get("task", "").strip()
+        week_start_str = request.form.get("week_start")
 
         if not task:
             return "Missing task", 400
 
-        all_tasks = list(get_all_tasks())
-        color_class = get_color_class(task, all_tasks)
+        color_class = get_color_class(task)
 
         try:
-            scheduled_date = date_for_weekday(day)
+            week_start = date.fromisoformat(week_start_str)
+            scheduled_date = date_for_weekday(day, week_start)
         except ValueError:
             return f"Unknown day: {day}", 400
 
