@@ -23,7 +23,7 @@
             {% for day, tasks in week_tasks.items() %}
             <section class="week-day day-{{ day|lower }}">
                 <header class="week-day-header">
-                    <h3>{{ day }}</h3>
+                    <h3>{{ day|capitalize }}</h3>
                 </header>
 
                 <!-- Task list -->
@@ -40,7 +40,7 @@
                                 {{ task.task }}
                             </button>
 
-                            <form method="POST"
+                            <form method="POST" 
                                   action="tasks/delete/{{ task.id }}"
                                   class="delete-form">
                                 <button type="submit" class="delete-button">🗑️</button>
@@ -65,6 +65,7 @@
                     <form method="POST"
                           action="tasks/add/{{ day|lower }}"
                           class="task-form-inline">
+                        <input type="hidden" name="week_start" value="{{ week_start }}">
                         <input type="text"
                                name="task"
                                placeholder="Add a task"
