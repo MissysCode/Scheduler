@@ -1,5 +1,5 @@
 from flask import request, render_template, redirect, url_for
-from datetime import date
+from datetime import date, timedelta
 from .database import add_task, delete_task, assign_task_to_day, get_tasks_for_week
 from .services import date_for_weekday, build_week_tasks, get_task_names, get_color_class, get_week_range
 
@@ -11,8 +11,21 @@ def register_routes(app):
 
     @app.route("/week", methods=["GET"])
     def week_view():
-        week_start, week_end = get_week_range()
+
+        week_start_str = request.args.get("week_start")
+
+        if week_start_str:
+            reference_date = date.fromisoformat(week_start_str)
+        else:
+            reference_date = date.today()
+
+        week_start, week_end = get_week_range(reference_date)
+
         tasks = get_tasks_for_week(week_start.isoformat(), week_end.isoformat())
+
+        prev_week = (week_start - timedelta(days=7)).isoformat()
+        next_week = (week_start + timedelta(days=7)).isoformat()
+
         week_tasks = build_week_tasks(tasks)
         task_names = get_task_names(tasks)
         return render_template(
@@ -20,6 +33,9 @@ def register_routes(app):
             week_tasks=week_tasks, 
             task_names=task_names, 
             week_start=week_start.isoformat(),
+            week_end=week_end.isoformat(),
+            prev_week=prev_week,
+            next_week=next_week,
         )
 
     @app.route("/tasks/add/<day>", methods=["POST"])
@@ -39,7 +55,7 @@ def register_routes(app):
             return f"Unknown day: {day}", 400
 
         add_task(task, scheduled_date, color_class)
-        return redirect(url_for("week_view"))
+        return redirect(url_for("week_view"), week_start=week_start_str)
 
     @app.route("/tasks/delete/<task_id>", methods=["POST"])
     def delete_task_route(task_id):

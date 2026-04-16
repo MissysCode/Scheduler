@@ -19,6 +19,20 @@
     <section class="week-section">
         <h2 class="section-title">Week</h2>
 
+        <div class="week-nav">
+            <a href="{{ url_for('week_view', week_start=prev_week) }}" class="week-link">
+                ← Previous
+            </a>
+        
+            <div class="week-range">
+                {{ week_start }} – {{ week_end }}
+            </div>
+        
+            <a href="{{ url_for('week_view', week_start=next_week) }}" class="week-link">
+                Next →
+            </a>
+        </div>
+
         <div class="week-view">
             {% for day, tasks in week_tasks.items() %}
             <section class="week-day day-{{ day|lower }}">

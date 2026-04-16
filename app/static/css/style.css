@@ -50,6 +50,35 @@ ul {
 }
 
 /* ========== Week View ========== */
+.week-nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    margin: 1.5rem 0 2rem;
+    padding: 0.9rem 1.2rem;
+    background: rgba(255, 255, 255, 0.65);
+    border-radius: 20px;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.06);
+}
+
+.week-range {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: #1f2937;
+}
+
+.week-link {
+    font-size: 1.1rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: #7c3aed;
+}
+
+.week-link:hover {
+    text-decoration: underline;
+}
+
 .week-section {
     margin-top: 8px;
 }
