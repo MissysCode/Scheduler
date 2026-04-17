@@ -35,6 +35,7 @@ def delete_task(task_id):
     conn.execute("DELETE FROM tasks WHERE id = ?", (task_id,))
     conn.commit()
 
+#Function for reassigning tasks (currently unused)
 def assign_task_to_day(task_id, scheduled_date):
     conn = get_db()
     conn.execute(
@@ -71,6 +72,7 @@ def find_color_by_task_name(task_name):
     ).fetchone()
     return row[0] if row else None
 
+#Function for updating task color (currently unused)
 def update_task_color(task_id, color_class):
     conn = get_db()
     conn.execute(
@@ -79,6 +81,7 @@ def update_task_color(task_id, color_class):
     )
     conn.commit()
 
+#Function for finding a missing color (currently unused)
 def get_tasks_missing_colors():
     conn = get_db()
     return conn.execute(

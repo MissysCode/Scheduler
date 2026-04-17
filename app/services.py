@@ -45,8 +45,8 @@ def get_task_names(tasks):
 def normalize_task_name(task_name):
     return task_name.strip().lower()
 
-def get_color_class(task_name):
-    normalized = normalize_task_name(task_name)
-    digest = hashlib.md5(normalized.encode()).hexdigest()
+def pick_color_class(task_name: str) -> str:
+    normalized_name = normalize_task_name(task_name)
+    digest = hashlib.md5(normalized_name.encode()).hexdigest()
     color_index = int(digest, 16) % COLOR_COUNT + 1
     return f"color-{color_index}"
