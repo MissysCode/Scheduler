@@ -1,6 +1,6 @@
 from flask import request, render_template, redirect, url_for
 from datetime import date, timedelta
-from .database import add_task, delete_task, assign_task_to_day, get_tasks_for_week
+from .database import add_task, delete_task, assign_task_to_day, get_tasks_for_week, find_color_by_task_name
 from .services import date_for_weekday, build_week_tasks, get_task_names, pick_color_class, get_week_range
 
 
@@ -46,7 +46,12 @@ def register_routes(app):
         if not task:
             return "Missing task", 400
 
-        color_class = pick_color_class(task)
+        existing_color = find_color_by_task_name(task)
+
+        if existing_color:
+            color_class = existing_color
+        else:
+            color_class = pick_color_class(task)
 
         try:
             week_start = date.fromisoformat(week_start_str)
@@ -55,7 +60,7 @@ def register_routes(app):
             return f"Unknown day: {day}", 400
 
         add_task(task, scheduled_date, color_class)
-        return redirect(url_for("week_view"), week_start=week_start_str)
+        return redirect(url_for("week_view", week_start=week_start_str))
 
     @app.route("/tasks/delete/<task_id>", methods=["POST"])
     def delete_task_route(task_id):
