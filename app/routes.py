@@ -29,6 +29,10 @@ def register_routes(app):
         week_tasks = build_week_tasks(tasks)
         task_names = get_task_names(tasks)
 
+        today = date.today()
+        today_index = today.weekday()
+        is_current_week = week_start <= today <= week_end
+
         week_range_display = f"{week_start.strftime('%b %d')} – {week_end.strftime('%b %d, %Y')}"
 
         return render_template(
@@ -40,6 +44,8 @@ def register_routes(app):
             prev_week=prev_week,
             next_week=next_week,
             week_range_display=week_range_display,
+            today_index=today_index,
+            is_current_week=is_current_week,
         )
 
     @app.route("/tasks/add/<day>", methods=["POST"])

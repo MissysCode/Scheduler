@@ -5,34 +5,34 @@
 } /* berry pink */
 
 .color-2 {
-    background-color: #9a4f7a;
-    color: #ffffff;
-} /* dusty plum */
-
-.color-3 {
     background-color: #7a5c99;
     color: #ffffff;
-} /* muted violet */
+} /* violet */
 
-.color-4 {
+.color-3 {
     background-color: #5f7aa3;
     color: #ffffff;
 } /* dusty blue */
 
-.color-5 {
-    background-color: #c9a227;
-    color: #ffffff;
-} /* muted gold */
-
-.color-6 {
+.color-4 {
     background-color: #5f8b7a;
     color: #ffffff;
-} /* muted teal-green */
+} /* muted teal */
 
-.color-7 {
+.color-5 {
+    background-color: #a88734;
+    color: #ffffff;
+} /* earthy gold */
+
+.color-6 {
     background-color: #8a6a5a;
     color: #ffffff;
-} /* warm brown rose */
+} /* warm brown */
+
+.color-7 {
+    background-color: #c05555;
+    color: #ffffff;
+} /* soft muted red */
 
 
 /* ========== Base ========== */
@@ -144,6 +144,10 @@ ul {
     transition: box-shadow 0.2s ease, transform 0.2s ease;
 }
 
+.today {
+    box-shadow: inset 0 0 0 2px #b03c70;
+}
+
 /* remove day-specific border colors */
 .day-monday,
 .day-tuesday,
@@ -160,10 +164,10 @@ ul {
 }
 
 .week-day-header h3 {
+    font-weight: 600;
+    color: #444;
     margin: 0;
     font-size: 1.1rem;
-    font-weight: 700;
-    color: #111827;
 }
 
 .week-day:hover {
@@ -204,7 +208,7 @@ ul {
 
 .task-toggle:hover {
     transform: translateY(-1px);
-    box-shadow: 0 6px 14px rgba(15, 23, 42, 0.14);
+    box-shadow: 0 6px 14px rgba(0,0,0,0.12);
 }
 
 .empty-state {
