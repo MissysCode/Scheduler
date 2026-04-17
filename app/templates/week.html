@@ -11,14 +11,14 @@
 
     <!-- Top header -->
     <header class="planner-header">
-        <h1>Weekly Planner</h1>
-        <p>Plan your week ahead</p>
+        <h1>
+            Weekly Planner
+            <span class="header-subtitle">plan your week ahead</span>
+        </h1>
     </header>
 
     <!-- Week View -->
     <section class="week-section">
-        <h2 class="section-title">Week</h2>
-
         <div class="week-nav">
             <a href="{{ url_for('week_view', week_start=prev_week) }}" class="week-link">
                 ← Previous
