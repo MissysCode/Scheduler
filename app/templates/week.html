@@ -103,22 +103,64 @@
 </div>
 
 <script>
-function toggleDelete(taskButton) {
-    const row = taskButton.closest('.task-content');
-    if (!row) return;
-    row.classList.toggle('show-delete');
-}
-
-function toggleAddTask(triggerButton) {
-    const area = triggerButton.closest('.add-task-area');
-    if (!area) return;
-    area.classList.remove('collapsed');
-    area.classList.add('expanded');
-
-    const input = area.querySelector('input[name="task"]');
-    if (input) input.focus();
-}
-</script>
+    function toggleDelete(taskButton) {
+        const row = taskButton.closest('.task-content');
+        if (!row) return;
+        row.classList.toggle('show-delete');
+    }
+    
+    function toggleAddTask(triggerButton) {
+        const area = triggerButton.closest('.add-task-area');
+        if (!area) return;
+    
+        // close any other open add boxes first
+        document.querySelectorAll('.add-task-area.expanded').forEach(openArea => {
+            if (openArea !== area) {
+                collapseAddTask(openArea);
+            }
+        });
+    
+        area.classList.remove('collapsed');
+        area.classList.add('expanded');
+    
+        const input = area.querySelector('input[name="task"]');
+        if (input) input.focus();
+    }
+    
+    function collapseAddTask(area) {
+        if (!area) return;
+        area.classList.remove('expanded');
+        area.classList.add('collapsed');
+    }
+    
+    document.addEventListener('click', function(event) {
+        document.querySelectorAll('.add-task-area.expanded').forEach(area => {
+            if (!area.contains(event.target)) {
+                const input = area.querySelector('input[name="task"]');
+                if (input && input.value.trim() === '') {
+                    collapseAddTask(area);
+                }
+            }
+        });
+    });
+    
+    document.querySelectorAll('.add-task-area input[name="task"]').forEach(input => {
+        input.addEventListener('blur', function() {
+            const area = input.closest('.add-task-area');
+            if (!area) return;
+    
+            // small delay so clicking the submit button still works
+            setTimeout(() => {
+                const active = document.activeElement;
+                if (area.contains(active)) return;
+    
+                if (input.value.trim() === '') {
+                    collapseAddTask(area);
+                }
+            }, 100);
+        });
+    });
+    </script>
 
 </body>
 </html>
