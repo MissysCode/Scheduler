@@ -20,7 +20,7 @@
     <!-- Week View -->
     <section class="week-section">
         <div class="week-nav">
-            <a href="{{ url_for('week_view', week_start=prev_week) }}" class="week-link">
+            <a href="/scheduler/week?week_start={{ prev_week }}" class="week-link">
                 ← Previous
             </a>
         
@@ -28,7 +28,7 @@
                 {{ week_range_display }}
             </div>
         
-            <a href="{{ url_for('week_view', week_start=next_week) }}" class="week-link">
+            <a href="/scheduler/week?week_start={{ next_week }}" class="week-link">
                 Next →
             </a>
         </div>
