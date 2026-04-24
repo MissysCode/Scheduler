@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Weekly Task Scheduler</title>
-    <link rel="stylesheet" href="/scheduler/css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
 
@@ -20,15 +20,11 @@
     <!-- Week View -->
     <section class="week-section">
         <div class="week-nav">
-            <a href="/scheduler/week?week_start={{ prev_week }}" class="week-link">
+            <a href="{{ url_for('week_view', week_start=prev_week) }}" class="week-link">
                 ← Previous
             </a>
-        
-            <div class="week-range">
-                {{ week_range_display }}
-            </div>
-        
-            <a href="/scheduler/week?week_start={{ next_week }}" class="week-link">
+            
+            <a href="{{ url_for('week_view', week_start=next_week) }}" class="week-link">
                 Next →
             </a>
         </div>
