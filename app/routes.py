@@ -5,11 +5,10 @@ from .services import date_for_weekday, build_week_tasks, get_task_names, pick_c
 
 
 def register_routes(app):
-    @app.route("/", methods=["GET"])
-    def index():
-        return redirect(url_for("week_view"))
+    prefix = app.config.get("URL_PREFIX", "")
 
-    @app.route("/week", methods=["GET"])
+    @app.route(f"{prefix}/", methods=["GET"])
+    @app.route(f"{prefix}/week", methods=["GET"])
     def week_view():
 
         week_start_str = request.args.get("week_start")
