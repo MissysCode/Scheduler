@@ -47,7 +47,7 @@ def register_routes(app):
             is_current_week=is_current_week,
         )
 
-    @app.route("/tasks/add/<day>", methods=["POST"])
+    @app.route(f"{prefix}/tasks/add/<day>", methods=["POST"])
     def add_task_for_day(day):
         task = request.form.get("task", "").strip()
         week_start_str = request.form.get("week_start")
@@ -71,13 +71,13 @@ def register_routes(app):
         add_task(task, scheduled_date, color_class)
         return redirect(url_for("week_view", week_start=week_start_str))
 
-    @app.route("/tasks/delete/<task_id>", methods=["POST"])
+    @app.route(f"{prefix}/tasks/delete/<task_id>", methods=["POST"])
     def delete_task_route(task_id):
         delete_task(task_id)
         return redirect(url_for("week_view"))
 
     #Route for reassigning tasks (currently unused)
-    @app.route("/assign/<int:task_id>/<day>", methods=["POST"])
+    @app.route(f"{prefix}/assign/<int:task_id>/<day>", methods=["POST"])
     def assign_task(task_id, day):
         try:
             scheduled_date = date_for_weekday(day)
