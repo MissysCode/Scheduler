@@ -73,8 +73,9 @@ def register_routes(app):
 
     @app.route(f"{prefix}/tasks/delete/<task_id>", methods=["POST"])
     def delete_task_route(task_id):
+        week_start = request.form.get("week_start")
         delete_task(task_id)
-        return redirect(url_for("week_view"))
+        return redirect(url_for("week_view", week_start=week_start))
 
     #Route for reassigning tasks (currently unused)
     @app.route(f"{prefix}/assign/<int:task_id>/<day>", methods=["POST"])

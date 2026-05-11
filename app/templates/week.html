@@ -54,6 +54,7 @@
                                   action="{{ url_for('delete_task_route', task_id=task.id) }}"
                                   class="delete-form">
                                 <button type="submit" class="delete-button">🗑️</button>
+                                <input type="hidden" name="week_start" value="{{ week_start }}">
                             </form>
                         </div>
                     </li>
