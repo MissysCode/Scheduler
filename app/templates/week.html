@@ -51,7 +51,7 @@
                             </button>
 
                             <form method="POST" 
-                                  action="tasks/delete/{{ task.id }}"
+                                  action="{{ url_for('delete_task_route', task_id=task.id) }}"
                                   class="delete-form">
                                 <button type="submit" class="delete-button">🗑️</button>
                             </form>
@@ -73,7 +73,7 @@
 
                     <!-- Expanded state: input + submit -->
                     <form method="POST"
-                          action="tasks/add/{{ day|lower }}"
+                          action="{{ url_for('add_task_for_day', day=day|lower) }}"
                           class="task-form-inline">
                         <input type="hidden" name="week_start" value="{{ week_start }}">
                         <input type="text"
