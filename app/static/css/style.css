@@ -360,8 +360,7 @@ ul {
     }
 
     .week-nav {
-        flex-direction: column;
-        align-items: stretch;
+        grid-template-columns: 1fr;
         text-align: center;
     }
 
