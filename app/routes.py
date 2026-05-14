@@ -53,7 +53,7 @@ def register_routes(app):
         week_start_str = request.form.get("week_start")
 
         if not task:
-            return "Missing task", 400
+            return redirect(url_for("week_view", week_start=week_start_str))
 
         existing_color = find_color_by_task_name(task)
 
