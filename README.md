@@ -33,6 +33,16 @@ The project is deployed on a Linux server using:
 - nginx
 - rsync deployment script
 
+## Screenshots
+
+### Desktop View
+
+![Weekly Scheduler](images/week_view.png)
+
+### Mobile View
+
+![Mobile Scheduler](images/mobile_view.jpg)
+
 ## Status
 
 This project is a work in progress. I’m actively improving the UI, deployment setup, and task management features.
