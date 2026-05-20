@@ -1,6 +1,6 @@
 # Python cache and compiled files
 __pycache__/
-*.pyc
+*.py[cod]
 
 # macOS system files
 .DS_Store
@@ -12,6 +12,10 @@ schedule.db
 
 # Virtual environments
 .env
-.venv
+.venv/
 env/
 venv/
+
+# IDE/editor files
+.vscode/
+.idea/
