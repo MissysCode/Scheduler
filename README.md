@@ -25,6 +25,14 @@ A Flask + SQLite weekly planner app for creating tasks and assigning them to day
 - Deployment with gunicorn and nginx
 - Debugging real deployment issues
 
+## Deployment
+
+The project is deployed on a Linux server using:
+
+- Gunicorn
+- nginx
+- rsync deployment script
+
 ## Status
 
 This project is a work in progress. I’m actively improving the UI, deployment setup, and task management features.

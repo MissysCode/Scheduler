@@ -19,3 +19,5 @@ venv/
 # IDE/editor files
 .vscode/
 .idea/
+
+build.local.sh

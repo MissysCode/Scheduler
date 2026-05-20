@@ -2,21 +2,36 @@
 
 set -euxo pipefail
 
-# KEEP IN SYNC WITH THE ACTUAL RUN COMMAND  <---------------------------------+
-rsync --dry-run --delete -av app/static/ prinsessa:/var/www/html/scheduler/ # |
-rsync --dry-run --exclude __pycache__ --exclude venv --exclude .git --delete -av . prinsessa:~/backend-scheduler-missyscode.com
-#                                                                             |
-# Then, confirm that user wants to actually run the rsync                     |
-#                                                                             |
-read -p "Do you want to run the actual rsync? (y/n): " confirm    #  +--------+
-#                                                                 #  |
-if [[ $confirm == "y" ]]; then                                    #  |
-                                                                  #  |
-    # KEEP IN SYNC WITH THE DRY RUN COMMAND  <-----------------------+
-    rsync --delete -av app/static/ prinsessa:/var/www/html/scheduler/
-    rsync --exclude __pycache__ --exclude venv --exclude .git --delete -av . prinsessa:~/backend-scheduler-missyscode.com
+REMOTE_SERVER="your-server"
+REMOTE_APP_DIR="~/backend-scheduler"
+REMOTE_STATIC_DIR="/var/www/html/scheduler"
 
-    echo "Rsync completed successfully."
+echo "Running deployment dry run..."
+
+rsync --dry-run --delete -av app/static/ \
+    ${REMOTE_SERVER}:${REMOTE_STATIC_DIR}
+
+rsync --dry-run \
+    --exclude __pycache__ \
+    --exclude venv \
+    --exclude .git \
+    --delete -av . \
+    ${REMOTE_SERVER}:${REMOTE_APP_DIR}
+
+read -p "Run actual deployment? (y/n): " confirm
+
+if [[ $confirm == "y" ]]; then
+    rsync --delete -av app/static/ \
+        ${REMOTE_SERVER}:${REMOTE_STATIC_DIR}
+
+    rsync \
+        --exclude __pycache__ \
+        --exclude venv \
+        --exclude .git \
+        --delete -av . \
+        ${REMOTE_SERVER}:${REMOTE_APP_DIR}
+
+    echo "Deployment completed successfully."
 else
-    echo "Rsync aborted."
+    echo "Deployment cancelled."
 fi
