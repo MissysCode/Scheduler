@@ -37,11 +37,11 @@ The project is deployed on a Linux server using:
 
 ### Desktop View
 
-![Weekly Scheduler](images/week_view.png)
+<img src="images/week_view.png" width="800">
 
 ### Mobile View
 
-![Mobile Scheduler](images/mobile_view.jpg)
+<img src="images/mobile_view.jpg" width="300">
 
 ## Status
 
