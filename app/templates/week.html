@@ -35,15 +35,17 @@
         </div>
 
         <div class="week-view">
-            {% for day, tasks in week_tasks.items() %}
+            {% for day in days %}
             <section class="week-day day-{{ day|lower }} {% if is_current_week and loop.index0 == today_index %}today{% endif %}">
                 <header class="week-day-header">
-                    <h3>{{ day|capitalize }}</h3>
+                    <h3>{{ day.name }}
+                    <span class="header-subtitle">{{ day.number }}</span>
+                    </h3>
                 </header>
 
                 <!-- Task list -->
                 <ul class="task-list">
-                    {% for task in tasks %}
+                    {% for task in day.tasks %}
                     <li class="task-row">
                         <div class="task-content">
                             <!-- Click the task to reveal delete -->

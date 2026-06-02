@@ -1,7 +1,7 @@
 from flask import request, render_template, redirect, url_for
 from datetime import date, timedelta
 from .database import add_task, delete_task, assign_task_to_day, get_tasks_for_week, find_color_by_task_name
-from .services import date_for_weekday, build_week_tasks, get_task_names, pick_color_class, get_week_range
+from .services import date_for_weekday, build_days, get_task_names, pick_color_class, get_week_range
 
 
 def register_routes(app):
@@ -25,7 +25,8 @@ def register_routes(app):
         prev_week = (week_start - timedelta(days=7)).isoformat()
         next_week = (week_start + timedelta(days=7)).isoformat()
 
-        week_tasks = build_week_tasks(tasks)
+        days = build_days(tasks, week_start)
+            
         task_names = get_task_names(tasks)
 
         today = date.today()
@@ -36,7 +37,6 @@ def register_routes(app):
 
         return render_template(
             "week.html", 
-            week_tasks=week_tasks, 
             task_names=task_names, 
             week_start=week_start.isoformat(),
             week_end=week_end.isoformat(),
@@ -45,6 +45,7 @@ def register_routes(app):
             week_range_display=week_range_display,
             today_index=today_index,
             is_current_week=is_current_week,
+            days=days,
         )
 
     @app.route(f"{prefix}/tasks/add/<day>", methods=["POST"])

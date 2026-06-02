@@ -22,22 +22,24 @@ def get_week_range(reference_date=None):
     end = start + timedelta(days=6)
     return start, end
 
-def build_week_tasks(tasks):
-    week_tasks = {
-        day: [] for day in DAY_NAMES
-    }
+def build_days(tasks, week_start):
+    days = []
 
-    for task in tasks:
-        if task.scheduled_date:
-            day_name = datetime.fromisoformat(task.scheduled_date).strftime("%A").lower()
-            if day_name in week_tasks:
-                week_tasks[day_name].append({
-                    "id": task.id,
-                    "task": task.task,
-                    "color_class": task.color_class,
-                })
+    for i in range(7):
+        current_date = week_start + timedelta(days=i)
 
-    return week_tasks
+        day_tasks = [
+            task for task in tasks
+            if task.scheduled_date == current_date.isoformat()
+        ]
+
+        days.append({
+            "name": current_date.strftime("%A"),
+            "number": current_date.strftime("%d"),
+            "tasks": day_tasks,
+        })
+
+    return days
 
 def get_task_names(tasks):
     return sorted(set(t.task for t in tasks))
