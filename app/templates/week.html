@@ -36,7 +36,7 @@
 
         <div class="week-view">
             {% for day in days %}
-            <section class="week-day day-{{ day|lower }} {% if is_current_week and loop.index0 == today_index %}today{% endif %}">
+            <section class="week-day day-{{ day.name|lower }} {% if is_current_week and loop.index0 == today_index %}today{% endif %}">
                 <header class="week-day-header">
                     <h3>{{ day.name }}
                     <span class="header-subtitle">{{ day.number }}</span>
@@ -71,7 +71,7 @@
                 </ul>
 
                 <!-- Add task for this specific day -->
-                <div class="add-task-area collapsed" data-day="{{ day|lower }}">
+                <div class="add-task-area collapsed" data-day="{{ day.name|lower }}">
                     <!-- Collapsed state: round + button -->
                     <button type="button"
                             class="add-trigger"
@@ -81,19 +81,19 @@
 
                     <!-- Expanded state: input + submit -->
                     <form method="POST"
-                          action="{{ url_for('add_task_for_day', day=day|lower) }}"
+                          action="{{ url_for('add_task_for_day', day=day.name|lower) }}"
                           class="task-form-inline">
                         <input type="hidden" name="week_start" value="{{ week_start }}">
                         <input type="text"
                                name="task"
                                placeholder="Add a task"
                                required
-                               list="task-suggestions-{{ day }}">
+                               list="task-suggestions-{{ day.name|lower }}">
                         <button type="submit" class="btn-add-task">+</button>
                     </form>
 
                     <!-- Suggestions from existing tasks in DB -->
-                    <datalist id="task-suggestions-{{ day }}">
+                    <datalist id="task-suggestions-{{ day.name|lower }}">
                         {% for name in task_names %}
                             <option value="{{ name }}"></option>
                         {% endfor %}
